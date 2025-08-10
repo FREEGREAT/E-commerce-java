@@ -15,7 +15,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private Object user;
 
     @GetMapping(path = "/api/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
@@ -24,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/api/users/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
 
         return userService.fetchUserById(id)
                 .map(ResponseEntity::ok)
@@ -37,7 +36,7 @@ public class UserController {
         return new ResponseEntity<>("User created",HttpStatus.CREATED);
     }
     @PutMapping(path = "/api/users/{id}")
-    public ResponseEntity<String>  updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<String>  updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
         userService.updateUser(id, userRequest);
         return new ResponseEntity<>("User updated",HttpStatus.OK);
     }
