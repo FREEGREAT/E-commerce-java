@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -19,36 +20,36 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping(path = "/api/product")
+    @PostMapping()
     public ResponseEntity<String> createProduct(@RequestBody ProductRequest productRequest){
         productService.addProduct(productRequest);
         return new ResponseEntity<>("Product created",HttpStatus.CREATED);
-    };
-    @GetMapping(path = "/api/product/{id}")
+    }
+    @GetMapping(path = "/{id}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id){
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    };
-    @GetMapping(path = "/api/product")
+    }
+    @GetMapping
     public ResponseEntity<List<ProductResponse>> fetchAllProduct(){
         return  new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
-    };
+    }
 
-    @PutMapping(path = "/api/product/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest){
         return productService.updateProduct(id, productRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(path = "/api/product/{id}")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteProducts(@PathVariable Long id){
         boolean isDeleted = productService.deleteProduct(id);
         return  isDeleted ?  ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping(path = "/api/product/search")
+    @GetMapping(path = "/search")
     public ResponseEntity<List<ProductResponse>> searchProducts(@RequestParam String keyword){
         return ResponseEntity.ok(productService.searchProducts(keyword));
     }

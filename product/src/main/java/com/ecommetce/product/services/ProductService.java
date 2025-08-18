@@ -23,15 +23,15 @@ public class ProductService {
         Product product = new Product();
         mapProductFromRequest(productRequest, product);
         productRepository.save(product);
-    };
+    }
 
     public Optional<ProductResponse> getProductById(Long id){
-        return productRepository.findById(id)
+        return productRepository.findByIdAndActiveTrue(id)
                 .map(this::mapToProductResponse);
     }
 
     public List<ProductResponse> getProducts(){
-        return productRepository.findAll().stream()
+        return productRepository.findByActiveTrue().stream()
                 .map(this::mapToProductResponse)
                 .collect(Collectors.toList());
     }
@@ -80,7 +80,7 @@ public class ProductService {
         productResponse.setCategory(product.getCategory());
         productResponse.setImageUrl(product.getImageUrl());
         return  productResponse;
-    };
+    }
 
     private void  mapProductFromRequest(ProductRequest productRequest, Product product){
         product.setActive(productRequest.getActive());

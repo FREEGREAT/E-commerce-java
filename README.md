@@ -56,25 +56,30 @@ spring.data.mongodb.database=userdb
 
 ---
 
-## 3. Additional Information
+## 3. Eureka config example
 
-**Maven dependencies (`pom.xml`) for working with PostgreSQL and MongoDB:**
-```xml
-    <!-- PostgreSQL -->
-    <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-    </dependency>
+Server config:
+```properties
+spring.application.name=eureka-server
+server.port=8761
 
-    <!-- Spring Data JPA (using with psql) -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+```
 
-    <!-- MongoDB -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-mongodb</artifactId>
-    </dependency>
+Client config (user-service for example):
+```properties
+spring.application.name=user-service
+
+server.port=8081
+
+#Mongo
+spring.data.mongodb.uri=mongodb://localhost:27017/userdb
+spring.data.mongodb.database=userdb
+
+#Eureka
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+
 ```
