@@ -4,6 +4,9 @@ import com.ecommerce.user.dto.UserRequest;
 import com.ecommerce.user.dto.UserResponse;
 import com.ecommerce.user.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +15,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
+   // private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping(path = "/api/users")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
@@ -24,7 +29,8 @@ public class UserController {
 
     @GetMapping(path = "/api/users/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable String id) {
-
+        log.info("Request recieved for user:{}", id);
+        log.trace("This is TRACE level -very detail");
         return userService.fetchUserById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

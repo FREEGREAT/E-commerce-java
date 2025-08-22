@@ -34,3 +34,8 @@ build/
 
 ## Props ##
 application.properties
+
+### Logs ###
+.log
+logs
+.data
